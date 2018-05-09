@@ -55,6 +55,7 @@ public class SelectImageFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_select_image,container,false);
 //himom
         //ilyfljuhyfjkfg
+        //waze
         imageView = fragmentView.findViewById(R.id.imageView_select_image_frag);
         readTextButton = fragmentView.findViewById(R.id.readTextButton);
         getImageButton = fragmentView.findViewById(R.id.getImageButton);
