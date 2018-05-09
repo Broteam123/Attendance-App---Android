@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_readText"
+        android:enabled="true"
+        android:icon="@drawable/ic_read_text"
+        android:title="View Text"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_selectImage"
+        android:enabled="true"
+        android:icon="@drawable/ic_select_image"
+        android:title="Choose Image"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_goback"
+        android:enabled="true"
+        android:icon="@drawable/ic_go_back"
+        android:title="Go Back"
+        app:showAsAction="ifRoom"/>
+
+</menu>

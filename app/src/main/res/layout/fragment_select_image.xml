@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/select_image_layout_frag"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.a10013461.attendanceapp.SelectImageFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:id="@+id/imageView_select_image_frag"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="9" />
+
+    <LinearLayout
+        android:id="@+id/buttonLayoutFrag"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/readTextButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Read Text"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/getImageButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Choose Image"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</LinearLayout>
