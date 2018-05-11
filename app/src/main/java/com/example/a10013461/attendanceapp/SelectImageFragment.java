@@ -40,8 +40,9 @@ import java.util.Arrays;
 public class SelectImageFragment extends Fragment {
 
     ImageView imageView;
+    TextView textView;
     ClassElement classElement;
-    ArrayList<String> names;
+    ArrayList<String> names=new ArrayList<>();
     Button readTextButton;
     Button getImageButton;
     Frame frame;
@@ -54,9 +55,11 @@ public class SelectImageFragment extends Fragment {
 
         View fragmentView = inflater.inflate(R.layout.fragment_select_image,container,false);
 
+        classElement=getArguments().getParcelable("classList");
         imageView = fragmentView.findViewById(R.id.imageView_select_image_frag);
         readTextButton = fragmentView.findViewById(R.id.readTextButton);
         getImageButton = fragmentView.findViewById(R.id.getImageButton);
+        textView = fragmentView.findViewById(R.id.textView2);
 
         Log.d("hidere","jhi");
 
@@ -88,20 +91,24 @@ public class SelectImageFragment extends Fragment {
 
                         String imageText="";
                         StringBuilder stringBuilder = new StringBuilder();
-                        SparseArray<TextBlock> textBlocks = textRecognizer.detect(frame);
-                        for(int i=0;i<textBlocks.size();i++){
-                            TextBlock textBlock = textBlocks.get(textBlocks.keyAt(i));
-                            stringBuilder.append(textBlocks.keyAt(i));
+                        SparseArray<TextBlock> items = textRecognizer.detect(frame);
+                        for(int i=0;i<items.size();i++){
+                            TextBlock textBlock = items.valueAt(i);
+                            stringBuilder.append(textBlock.getValue());
                             stringBuilder.append("\n");
                             imageText = stringBuilder.toString();
                         }
 
-                        Log.d("hi",imageText);
 
-                        names = new ArrayList<String>(Arrays.asList(imageText.split("\n")));
+                        Log.d("imagetext", imageText);
+
+                        String [] words = imageText.split("\n");
+                        for(int i=0;i<words.length;i++){
+                            names.add(words[i]);
+                        }
+                        //Log.d("hidere",names.toString());
+                        //Log.d("imagetext",classElement.toString());
                         classElement.setPeople(names);
-                        Log.d("hidere",names.toString());
-
 
                     }
                 }else{
@@ -109,7 +116,6 @@ public class SelectImageFragment extends Fragment {
                 }
             }
         });
-
         return fragmentView;
     }
 
