@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -46,8 +47,8 @@ public class SelectImageFragment extends Fragment {
     Button readTextButton;
     Button getImageButton;
     Frame frame;
+    private Uri selectedImageUri;
     final int RequestPermissionCode=1;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,11 +58,12 @@ public class SelectImageFragment extends Fragment {
 
         classElement=getArguments().getParcelable("classList");
         imageView = fragmentView.findViewById(R.id.imageView_select_image_frag);
+        if(savedInstanceState!=null){
+            imageView.setImageURI(selectedImageUri);
+        }
         readTextButton = fragmentView.findViewById(R.id.readTextButton);
         getImageButton = fragmentView.findViewById(R.id.getImageButton);
         textView = fragmentView.findViewById(R.id.textView2);
-
-        Log.d("hidere","jhi");
 
         int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
         if(permissionCheck == PackageManager.PERMISSION_DENIED){
@@ -73,7 +75,6 @@ public class SelectImageFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = CropImage.activity().getIntent(getContext());
                 startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
-                Log.d("hidere","button pressed");
             }
         });
 
@@ -99,15 +100,12 @@ public class SelectImageFragment extends Fragment {
                             imageText = stringBuilder.toString();
                         }
 
-
                         Log.d("imagetext", imageText);
 
                         String [] words = imageText.split("\n");
                         for(int i=0;i<words.length;i++){
                             names.add(words[i]);
                         }
-                        //Log.d("hidere",names.toString());
-                        //Log.d("imagetext",classElement.toString());
                         classElement.setPeople(names);
 
                     }
@@ -117,6 +115,24 @@ public class SelectImageFragment extends Fragment {
             }
         });
         return fragmentView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null){
+            selectedImageUri = Uri.parse(savedInstanceState.getString("img"));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("hi","SaveInstanceState was called!");
+        if(selectedImageUri!=null) {
+            Log.d("hi", selectedImageUri.toString());
+            outState.putString("img", selectedImageUri.toString());
+        }
     }
 
     private void requestRunTimePermission() {
@@ -130,15 +146,11 @@ public class SelectImageFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("hidere","OnActivityResult called");
-
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            Log.d("hidere","Request Code equals crop image activity request code");
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("hidere","request code equals result ok");
-                Uri uri = result.getUri();
-                imageView.setImageURI(uri);
+                selectedImageUri = result.getUri();
+                imageView.setImageURI(selectedImageUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Toast.makeText(getActivity(),""+error,Toast.LENGTH_SHORT).show();
@@ -159,5 +171,4 @@ public class SelectImageFragment extends Fragment {
             break;
         }
     }
-
 }
