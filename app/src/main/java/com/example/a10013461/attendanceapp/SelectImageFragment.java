@@ -41,7 +41,6 @@ import java.util.Arrays;
 public class SelectImageFragment extends Fragment {
 
     ImageView imageView;
-    TextView textView;
     ClassElement classElement;
     ArrayList<String> names=new ArrayList<>();
     Button readTextButton;
@@ -59,12 +58,13 @@ public class SelectImageFragment extends Fragment {
 
         classElement=getArguments().getParcelable("classList");
         imageView = fragmentView.findViewById(R.id.imageView_select_image_frag);
-        if(selectedImageUri!=null){
-            imageView.setImageURI(Uri.parse(getArguments().getString("img")));
-        }
+
+        if (getArguments().getString("img") != null)
+            if(Uri.parse(getArguments().getString("img"))!=null)
+                imageView.setImageURI(Uri.parse(getArguments().getString("img")));
+
         readTextButton = fragmentView.findViewById(R.id.readTextButton);
         getImageButton = fragmentView.findViewById(R.id.getImageButton);
-        textView = fragmentView.findViewById(R.id.textView2);
 
         int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
         if(permissionCheck == PackageManager.PERMISSION_DENIED){
@@ -100,8 +100,6 @@ public class SelectImageFragment extends Fragment {
                             stringBuilder.append("\n");
                             imageText = stringBuilder.toString();
                         }
-
-                        Log.d("imagetext", imageText);
 
                         String [] words = imageText.split("\n");
                         for(int i=0;i<words.length;i++){
