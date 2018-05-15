@@ -131,7 +131,7 @@ public class SelectImageFragment extends Fragment {
         Log.d("hi","SaveInstanceState was called!");
         if(selectedImageUri!=null) {
             Log.d("hi", selectedImageUri.toString());
-            outState.putString("img", selectedImageUri.toString());
+            outState.putString("img", selectedImageUri.toString());//hi
         }
     }
 

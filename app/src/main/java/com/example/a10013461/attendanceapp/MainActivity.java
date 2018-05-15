@@ -39,7 +39,8 @@ import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class MainActivity extends ListActivity {
+public class
+MainActivity extends ListActivity {
 
     Button addClass;
 
