@@ -23,12 +23,13 @@ import com.google.android.gms.vision.Frame;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 
-public class AddPeopleActivity extends AppCompatActivity {
+public class AddPeopleActivity extends AppCompatActivity implements SelectImageFragment.ReceiveImage{
 
     ImageView imageView;
     TextView textView;
     Button readTextButton;
     Button getImageButton;
+    Uri theImage;
     final int RequestPermissionCode=1;
     Frame frame;
     BottomNavigationView bottomNavigationView;
@@ -48,6 +49,8 @@ public class AddPeopleActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Bundle data = new Bundle();
                 data.putParcelable("classList", getIntent().getParcelableExtra("className"));
+                if(theImage!=null)
+                    data.putString("img",theImage.toString());
                 switch(item.getItemId()){
                     case R.id.action_readText:
                         ReadTextFragment readTextFragment = new ReadTextFragment();
@@ -57,7 +60,6 @@ public class AddPeopleActivity extends AppCompatActivity {
                     case R.id.action_selectImage:
                         SelectImageFragment selectImageFragment = new SelectImageFragment();
                         selectImageFragment.setArguments(data);
-                        Log.d("TAG1",selectImageFragment.getArguments().toString());
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectImageFragment).commit();
                         break;
                     case R.id.action_goback:
@@ -85,5 +87,10 @@ public class AddPeopleActivity extends AppCompatActivity {
             }
             break;
         }
+    }
+
+    @Override
+    public void receive(Uri uri) {
+        theImage = uri;
     }
 }

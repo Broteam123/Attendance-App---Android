@@ -49,6 +49,7 @@ public class SelectImageFragment extends Fragment {
     Frame frame;
     private Uri selectedImageUri;
     final int RequestPermissionCode=1;
+    ReceiveImage receiveImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,8 +59,8 @@ public class SelectImageFragment extends Fragment {
 
         classElement=getArguments().getParcelable("classList");
         imageView = fragmentView.findViewById(R.id.imageView_select_image_frag);
-        if(savedInstanceState!=null){
-            imageView.setImageURI(selectedImageUri);
+        if(selectedImageUri!=null){
+            imageView.setImageURI(Uri.parse(getArguments().getString("img")));
         }
         readTextButton = fragmentView.findViewById(R.id.readTextButton);
         getImageButton = fragmentView.findViewById(R.id.getImageButton);
@@ -117,24 +118,6 @@ public class SelectImageFragment extends Fragment {
         return fragmentView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState!=null){
-            selectedImageUri = Uri.parse(savedInstanceState.getString("img"));
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d("hi","SaveInstanceState was called!");
-        if(selectedImageUri!=null) {
-            Log.d("hi", selectedImageUri.toString());
-            outState.putString("img", selectedImageUri.toString());//hi
-        }
-    }
-
     private void requestRunTimePermission() {
         if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)){
             Toast.makeText(getActivity(),"CAMERA permission lets us access CAMERA app", Toast.LENGTH_SHORT).show();
@@ -150,6 +133,7 @@ public class SelectImageFragment extends Fragment {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == Activity.RESULT_OK) {
                 selectedImageUri = result.getUri();
+                receiveImage.receive(selectedImageUri);
                 imageView.setImageURI(selectedImageUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -170,5 +154,15 @@ public class SelectImageFragment extends Fragment {
             }
             break;
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        receiveImage = (ReceiveImage) context;
+    }
+
+    public interface ReceiveImage{
+        public void receive(Uri uri);
     }
 }

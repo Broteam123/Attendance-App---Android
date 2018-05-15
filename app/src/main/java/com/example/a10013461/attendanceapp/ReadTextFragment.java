@@ -15,7 +15,7 @@ public class ReadTextFragment extends Fragment {
 
     ListView listView;
 
-    ClassElement classElement = getArguments().getParcelable("classList");
+    ClassElement classElement;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
 
@@ -25,6 +25,7 @@ public class ReadTextFragment extends Fragment {
 
         View fragmentView = inflater.inflate(R.layout.fragment_read_text_fragment,container,false);
 
+        classElement = getArguments().getParcelable("classList");
         listView = (ListView) fragmentView.findViewById(R.id.listOfNames);
         list = classElement.getPeople();
         adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list);
