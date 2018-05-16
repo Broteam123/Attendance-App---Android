@@ -129,12 +129,11 @@ MainActivity extends ListActivity {
                     case 0://add people
                         Intent intent = new Intent(MainActivity.this,AddPeopleActivity.class);
                         intent.putExtra("className", list.get(position));
-                        Log.d("TAG","hi");
                         startActivityForResult(intent,CODE);
                         break;
                     case 1://take attendance
                         Intent intent2 = new Intent(MainActivity.this,TakeAttendanceActivity.class);
-                        intent2.putExtra("classList", list.get(position).getClass());
+                        intent2.putStringArrayListExtra("classList", list.get(position).getPeople());
                         startActivityForResult(intent2,CODEE);
                         break;
                     case 2://edit

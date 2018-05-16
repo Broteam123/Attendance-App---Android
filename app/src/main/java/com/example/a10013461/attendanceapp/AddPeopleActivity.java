@@ -36,7 +36,6 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("TAG","HI2");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_people);
 

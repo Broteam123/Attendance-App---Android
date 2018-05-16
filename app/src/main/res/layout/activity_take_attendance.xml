@@ -11,14 +11,14 @@
     <SurfaceView
         android:id="@+id/surfaceView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/namez"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView" />
 
-    </LinearLayout>
 </LinearLayout>
