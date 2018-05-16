@@ -63,7 +63,7 @@ MainActivity extends ListActivity {
 
     /*
     Awesome Notes Section!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        work on parcelable for ClassElement
+    do TakeAttendanceActivity
      */
 
     @Override
