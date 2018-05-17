@@ -23,7 +23,7 @@ import com.google.android.gms.vision.Frame;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 
-public class AddPeopleActivity extends AppCompatActivity implements SelectImageFragment.ReceiveImage{
+public class AddPeopleActivity extends AppCompatActivity implements SelectImageFragment.ReceiveImage,ReadTextFragment.sendItPls{
 
     ImageView imageView;
     TextView textView;
@@ -33,11 +33,14 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
     final int RequestPermissionCode=1;
     Frame frame;
     BottomNavigationView bottomNavigationView;
+    ClassElement classE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_people);
+
+        classE = getIntent().getParcelableExtra("className");
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav);
 
@@ -47,7 +50,7 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Bundle data = new Bundle();
-                data.putParcelable("classList", getIntent().getParcelableExtra("className"));
+                data.putParcelable("classList", classE);
                 if(theImage!=null)
                     data.putString("img",theImage.toString());
                 switch(item.getItemId()){
@@ -62,6 +65,10 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectImageFragment).commit();
                         break;
                     case R.id.action_goback:
+                        Intent intent = new Intent();
+                        intent.putExtra(MainActivity.KEY,classE);
+                        Log.d("TAG1",classE.getPeople().toString()+" hello I am sending this back to Main Activity");
+                        setResult(RESULT_OK,intent);
                         finish();
                         break;
                 }
@@ -91,5 +98,11 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
     @Override
     public void receive(Uri uri) {
         theImage = uri;
+    }
+
+    @Override
+    public void send(ClassElement classElement) {
+        classE = classElement;
+        Log.d("TAG1",classE.toString()+" this is in the send interface");
     }
 }

@@ -19,6 +19,7 @@ public class ClassElement implements Parcelable{
     public ClassElement(String block, String className){
         this.block=block;
         this.className=className;
+        this.people=new ArrayList<>();
     }
 
     protected ClassElement(Parcel in) {

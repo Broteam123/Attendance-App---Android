@@ -46,6 +46,8 @@ MainActivity extends ListActivity {
 
     int defaultColor;
 
+    ClassElement theClassElement;
+
     int classes;
 
     String currentBlock;
@@ -53,6 +55,7 @@ MainActivity extends ListActivity {
 
     static final int CODE = 123;
     static final int CODEE = 122;
+    static final String KEY = "adw";
 
     TextView amountOfClassesText;
 
@@ -119,6 +122,8 @@ MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(final ListView l, View v, final int position, long id) {
         super.onListItemClick(l, v, position, id);
+        theClassElement=list.get(position);
+
         final int positionToRemove = position;
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(list.get(position).getBlock()+" - "+list.get(position).getClassName());
@@ -128,12 +133,13 @@ MainActivity extends ListActivity {
                 switch(i){
                     case 0://add people
                         Intent intent = new Intent(MainActivity.this,AddPeopleActivity.class);
-                        intent.putExtra("className", list.get(position));
+                        intent.putExtra("className", theClassElement);
                         startActivityForResult(intent,CODE);
                         break;
                     case 1://take attendance
                         Intent intent2 = new Intent(MainActivity.this,TakeAttendanceActivity.class);
-                        intent2.putStringArrayListExtra("classList", list.get(position).getPeople());
+                        intent2.putStringArrayListExtra("classList", theClassElement.getPeople());
+                        Log.d("TAG",theClassElement.getPeople().toString());
                         startActivityForResult(intent2,CODEE);
                         break;
                     case 2://edit
@@ -143,14 +149,14 @@ MainActivity extends ListActivity {
                         final EditText editTextBlock = (EditText) v.findViewById(R.id.editTextBlock2);
                         final EditText editTextClass = (EditText) v.findViewById(R.id.editTextClass2);
 
-                        editTextBlock.setText(list.get(position).getBlock());
-                        editTextClass.setText(list.get(position).getClassName());
+                        editTextBlock.setText(theClassElement.getBlock());
+                        editTextClass.setText(theClassElement.getClassName());
 
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                list.get(position).setBlock(editTextBlock.getText().toString());
-                                list.get(position).setClassName(editTextClass.getText().toString());
+                                theClassElement.setBlock(editTextBlock.getText().toString());
+                                theClassElement.setClassName(editTextClass.getText().toString());
                                 l.invalidateViews();
                             }
                         });
@@ -162,7 +168,6 @@ MainActivity extends ListActivity {
                         });
 
                         AlertDialog dialog = builder.create();
-
                         dialog.setView(v);
                         dialog.show();
                         break;
@@ -216,5 +221,13 @@ MainActivity extends ListActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(resultCode==RESULT_OK&&requestCode==CODE){
+            theClassElement=(data.getParcelableExtra(KEY));
+            Log.d("TAG2",theClassElement.getPeople().toString());
+        }
+    }
 }
