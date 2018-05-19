@@ -32,7 +32,6 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     ListView listView;
     TextView textView;
     ArrayList<String> classList;
-    ArrayList<String> classListAgain;
     ArrayAdapter<String> arrayAdapter;
     final int RequestCameraPermissionID = 1001;
 
@@ -61,7 +60,6 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
         cameraView = (SurfaceView) findViewById(R.id.TakeAttendanceCameraView);
         classList = getIntent().getStringArrayListExtra("classList");
-        classListAgain = classList;
         listView = (ListView) findViewById(R.id.namesToCheckIn);
         textView = (TextView) findViewById(R.id.textView2);
         arrayAdapter = new ArrayAdapter<String>(TakeAttendanceActivity.this,android.R.layout.simple_list_item_1,classList);
@@ -127,8 +125,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
                                 Log.d("yo",stringBuilder.toString());
                                 for(int i=0;i<classList.size();i++){
                                     if(stringBuilder.toString().toUpperCase().contains(classList.get(i).toUpperCase())){
-                                        classListAgain.remove(i);
                                         listView.getChildAt(i-listView.getFirstVisiblePosition()).setBackgroundColor(Color.GREEN);
+                                        //classList.remove(i);
                                     }
                                 }
                             }
