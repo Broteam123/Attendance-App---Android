@@ -103,6 +103,5 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
     @Override
     public void send(ClassElement classElement) {
         classE = classElement;
-        Log.d("TAG1",classE.toString()+" this is in the send interface");
     }
 }

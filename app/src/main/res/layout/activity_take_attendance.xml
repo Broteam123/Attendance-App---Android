@@ -8,17 +8,29 @@
     android:weightSum="2"
     tools:context="com.example.a10013461.attendanceapp.TakeAttendanceActivity">
 
-    <SurfaceView
-        android:id="@+id/surfaceView3"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/namez"
+    <SurfaceView
+        android:id="@+id/TakeAttendanceCameraView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/takeAttendanceBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:orientation="horizontal">
+
+        <ListView
+            android:id="@+id/namesToCheckIn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </LinearLayout>

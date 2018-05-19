@@ -16,10 +16,13 @@ public class ClassElement implements Parcelable{
 
     ArrayList<String> people;
 
+    boolean done;
+
     public ClassElement(String block, String className){
         this.block=block;
         this.className=className;
         this.people=new ArrayList<>();
+        done=false;
     }
 
     protected ClassElement(Parcel in) {
@@ -52,6 +55,10 @@ public class ClassElement implements Parcelable{
         return className;
     }
 
+    public boolean getDone(){
+        return done;
+    }
+
     public void setBlock(String str){
         block = str;
     }
@@ -62,6 +69,10 @@ public class ClassElement implements Parcelable{
 
     public void setPeople(ArrayList<String> list){
         people = list;
+    }
+
+    public void setDone(boolean bool){
+        done = bool;
     }
 
     @Override
