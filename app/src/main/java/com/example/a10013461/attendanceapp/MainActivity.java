@@ -80,6 +80,7 @@ MainActivity extends ListActivity {
         amountOfClassesText = (TextView) findViewById(R.id.textAmountOfClasses);
         adapter = new CustomAdapter(this,R.layout.listview,list);
         setListAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         classes=0;
 
@@ -205,13 +206,16 @@ MainActivity extends ListActivity {
             ImageView imageView = adapterView.findViewById(R.id.statusImage);
             TextView block = adapterView.findViewById(R.id.textBlock);
             TextView className = adapterView.findViewById(R.id.textClassName);
-            TextView amountPresent = adapterView.findViewById(R.id.textPresent);
-            TextView amountAbsent = adapterView.findViewById(R.id.textAbsent);
+            TextView amountOfPeople = adapterView.findViewById(R.id.textPresent);
+            TextView amountHere = adapterView.findViewById(R.id.textAbsent);
 
             imageView.setImageResource(android.R.color.holo_red_dark);
 
             currentBlock = block.toString();
             currentClassName = className.toString();
+            amountOfPeople.setText(list.get(position).getPeople().size()+" People");
+            amountHere.setText("0/"+list.get(position).getPeople().size());
+
 
             block.setText("Block: "+list.get(position).getBlock());
             className.setText(list.get(position).getClassName());
