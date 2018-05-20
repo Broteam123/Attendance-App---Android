@@ -29,6 +29,7 @@ dependencies {
     })
 
     compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.google.code.gson:gson:2.8.4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
     compile 'com.google.android.gms:play-services-vision:15.0.1'

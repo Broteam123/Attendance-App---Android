@@ -34,6 +34,7 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
     Frame frame;
     BottomNavigationView bottomNavigationView;
     ClassElement classE;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
         setContentView(R.layout.activity_add_people);
 
         classE = getIntent().getParcelableExtra("className");
+        position=getIntent().getIntExtra("pos",0);
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_nav);
 
@@ -67,6 +69,7 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
                     case R.id.action_goback:
                         Intent intent = new Intent();
                         intent.putExtra(MainActivity.KEY,classE);
+                        intent.putExtra(MainActivity.KEYY,position);
                         Log.d("TAG1",classE.getPeople().toString()+" hello I am sending this back to Main Activity");
                         setResult(RESULT_OK,intent);
                         finish();

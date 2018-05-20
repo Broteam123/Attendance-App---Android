@@ -103,10 +103,9 @@ public class SelectImageFragment extends Fragment {
 
                         String [] words = imageText.split("\n");
                         for(int i=0;i<words.length;i++){
-                            names.add(words[i]);
+                            names.add(i,words[i]);
                         }
                         classElement.setPeople(names);
-
                     }
                 }else{
                     Toast.makeText(getActivity(),"No image found :(",Toast.LENGTH_SHORT).show();

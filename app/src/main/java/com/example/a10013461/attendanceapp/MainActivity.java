@@ -5,6 +5,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Parcelable;
@@ -32,17 +33,24 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.prefs.Preferences;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class
-MainActivity extends ListActivity {
+public class MainActivity extends ListActivity {
 
     Button addClass;
+    Button saveClasses;
 
     int defaultColor;
 
@@ -56,10 +64,13 @@ MainActivity extends ListActivity {
     static final int CODE = 123;
     static final int CODEE = 122;
     static final String KEY = "adw";
+    static final String KEYY = "aaaa";
+
+    private static final String SHARED_PREFZ_NAME = "MY_SHARED_PREF";
 
     TextView amountOfClassesText;
 
-    ArrayList<ClassElement> list = new ArrayList<>();
+    ArrayList<ClassElement> list;
     CharSequence[] charSequences = {"Add People","Take Attendance","Edit","Remove","Cancel"};
 
     CustomAdapter adapter;
@@ -73,10 +84,13 @@ MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loadData();
+
         currentBlock = "";
         currentClassName = "";
 
         addClass = (Button) findViewById(R.id.addButton);
+        saveClasses = (Button) findViewById(R.id.saveClassesButton);
         amountOfClassesText = (TextView) findViewById(R.id.textAmountOfClasses);
         adapter = new CustomAdapter(this,R.layout.listview,list);
         setListAdapter(adapter);
@@ -113,9 +127,15 @@ MainActivity extends ListActivity {
                 });
 
                 AlertDialog dialog = builder.create();
-
                 dialog.setView(v);
                 dialog.show();
+            }
+        });
+
+        saveClasses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveData();
             }
         });
     }
@@ -123,7 +143,7 @@ MainActivity extends ListActivity {
     protected void onListItemClick(final ListView l, View v, final int position, long id) {
         super.onListItemClick(l, v, position, id);
         if(theClassElement!=null) {
-            list.set(position, theClassElement);
+            theClassElement=null;
         }
         final int positionToRemove = position;
         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -134,12 +154,13 @@ MainActivity extends ListActivity {
                 switch(i){
                     case 0://add people
                         Intent intent = new Intent(MainActivity.this,AddPeopleActivity.class);
-                        intent.putExtra("className", list.get(position));
+                        intent.putExtra("className", adapter.getItem(position));
+                        intent.putExtra("pos",position);
                         startActivityForResult(intent,CODE);
                         break;
                     case 1://take attendance
                         Intent intent2 = new Intent(MainActivity.this,TakeAttendanceActivity.class);
-                        intent2.putStringArrayListExtra("classList", list.get(position).getPeople());
+                        intent2.putStringArrayListExtra("classList", adapter.getItem(position).getPeople());
                         startActivityForResult(intent2,CODEE);
                         break;
                     case 2://edit
@@ -149,14 +170,14 @@ MainActivity extends ListActivity {
                         final EditText editTextBlock = (EditText) v.findViewById(R.id.editTextBlock2);
                         final EditText editTextClass = (EditText) v.findViewById(R.id.editTextClass2);
 
-                        editTextBlock.setText(list.get(position).getBlock());
-                        editTextClass.setText(list.get(position).getClassName());
+                        editTextBlock.setText(list.get(getSelectedItemPosition()).getBlock());
+                        editTextClass.setText(list.get(getSelectedItemPosition()).getClassName());
 
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                list.get(position).setBlock(editTextBlock.getText().toString());
-                                list.get(position).setClassName(editTextClass.getText().toString());
+                                list.get(getSelectedItemPosition()).setBlock(editTextBlock.getText().toString());
+                                list.get(getSelectedItemPosition()).setClassName(editTextClass.getText().toString());
                                 l.invalidateViews();
                             }
                         });
@@ -166,13 +187,12 @@ MainActivity extends ListActivity {
 
                             }
                         });
-
                         AlertDialog dialog = builder.create();
                         dialog.setView(v);
                         dialog.show();
                         break;
                     case 3://delete
-                        list.remove(positionToRemove);
+                        list.remove(getSelectedItemPosition());
                         l.invalidateViews();
                         amountOfClassesText.setText("Amount of Classes: "+adapter.getCount());
                         break;
@@ -214,7 +234,7 @@ MainActivity extends ListActivity {
             currentBlock = block.toString();
             currentClassName = className.toString();
             amountOfPeople.setText(list.get(position).getPeople().size()+" People");
-            amountHere.setText("0/"+list.get(position).getPeople().size());
+            amountHere.setText("0/"+list.get(position).getPeople().size()+" Present");
 
 
             block.setText("Block: "+list.get(position).getBlock());
@@ -230,6 +250,31 @@ MainActivity extends ListActivity {
 
         if(resultCode==RESULT_OK&&requestCode==CODE){
             theClassElement=(data.getParcelableExtra(KEY));
+            list.set(data.getIntExtra(KEYY,0),theClassElement);
+            adapter.notifyDataSetChanged();
         }
     }
+
+    public void saveData(){
+        SharedPreferences sp = this.getSharedPreferences(SHARED_PREFZ_NAME,Activity.MODE_PRIVATE);
+        SharedPreferences.Editor edit1 = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        edit1.putString("list",json);
+        edit1.apply();
+    }
+
+    public void loadData(){
+        SharedPreferences sp = this.getSharedPreferences(SHARED_PREFZ_NAME,Activity.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sp.getString("list",null);
+        Type type = new TypeToken<ArrayList<ClassElement>>() {}.getType();
+        list = gson.fromJson(json,type);
+
+        if(list==null){
+            list = new ArrayList<>();
+        }
+    }
+
+
 }
