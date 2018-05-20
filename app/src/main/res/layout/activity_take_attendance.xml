@@ -10,9 +10,9 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0" />
 
     <SurfaceView
         android:id="@+id/TakeAttendanceCameraView"
@@ -24,13 +24,24 @@
         android:id="@+id/takeAttendanceBottomLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <ListView
             android:id="@+id/namesToCheckIn"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/endAttendanceButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/holo_red_light"
+        android:text="Finish Taking Attendance"
+        android:textAllCaps="false"
+        android:textSize="24sp" />
 
 </LinearLayout>

@@ -70,7 +70,6 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
                         Intent intent = new Intent();
                         intent.putExtra(MainActivity.KEY,classE);
                         intent.putExtra(MainActivity.KEYY,position);
-                        Log.d("TAG1",classE.getPeople().toString()+" hello I am sending this back to Main Activity");
                         setResult(RESULT_OK,intent);
                         finish();
                         break;

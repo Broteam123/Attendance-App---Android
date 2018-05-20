@@ -65,6 +65,9 @@ public class MainActivity extends ListActivity {
     static final int CODEE = 122;
     static final String KEY = "adw";
     static final String KEYY = "aaaa";
+    static final String KEYYY = "awd";
+    static final String KEYYYY = "awdadadwadwadw";
+    static final String ANOTHERKEY = "yeyy";
 
     private static final String SHARED_PREFZ_NAME = "MY_SHARED_PREF";
 
@@ -136,6 +139,7 @@ public class MainActivity extends ListActivity {
             @Override
             public void onClick(View view) {
                 saveData();
+                Toast.makeText(MainActivity.this,"Classes Saved!",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -160,6 +164,7 @@ public class MainActivity extends ListActivity {
                         break;
                     case 1://take attendance
                         Intent intent2 = new Intent(MainActivity.this,TakeAttendanceActivity.class);
+                        intent2.putExtra("pos",position);
                         intent2.putStringArrayListExtra("classList", adapter.getItem(position).getPeople());
                         startActivityForResult(intent2,CODEE);
                         break;
@@ -170,14 +175,14 @@ public class MainActivity extends ListActivity {
                         final EditText editTextBlock = (EditText) v.findViewById(R.id.editTextBlock2);
                         final EditText editTextClass = (EditText) v.findViewById(R.id.editTextClass2);
 
-                        editTextBlock.setText(list.get(getSelectedItemPosition()).getBlock());
-                        editTextClass.setText(list.get(getSelectedItemPosition()).getClassName());
+                        editTextBlock.setText(list.get(position).getBlock());
+                        editTextClass.setText(list.get(position).getClassName());
 
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                list.get(getSelectedItemPosition()).setBlock(editTextBlock.getText().toString());
-                                list.get(getSelectedItemPosition()).setClassName(editTextClass.getText().toString());
+                                list.get(position).setBlock(editTextBlock.getText().toString());
+                                list.get(position).setClassName(editTextClass.getText().toString());
                                 l.invalidateViews();
                             }
                         });
@@ -192,7 +197,7 @@ public class MainActivity extends ListActivity {
                         dialog.show();
                         break;
                     case 3://delete
-                        list.remove(getSelectedItemPosition());
+                        list.remove(position);
                         l.invalidateViews();
                         amountOfClassesText.setText("Amount of Classes: "+adapter.getCount());
                         break;
@@ -220,8 +225,8 @@ public class MainActivity extends ListActivity {
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-            LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View adapterView = layoutInflater.inflate(R.layout.listview,null);
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            View adapterView = layoutInflater.inflate(R.layout.listview, null);
 
             ImageView imageView = adapterView.findViewById(R.id.statusImage);
             TextView block = adapterView.findViewById(R.id.textBlock);
@@ -229,12 +234,19 @@ public class MainActivity extends ListActivity {
             TextView amountOfPeople = adapterView.findViewById(R.id.textPresent);
             TextView amountHere = adapterView.findViewById(R.id.textAbsent);
 
-            imageView.setImageResource(android.R.color.holo_red_dark);
+            if (list.get(position).getImageColor() == 1)
+                imageView.setImageResource(android.R.color.holo_red_dark);
+            if(list.get(position).getImageColor()==2){
+                imageView.setImageResource(android.R.color.holo_orange_light);
+            }
+            if(list.get(position).getImageColor()==3){
+                imageView.setImageResource(android.R.color.holo_green_light);
+            }
 
             currentBlock = block.toString();
             currentClassName = className.toString();
             amountOfPeople.setText(list.get(position).getPeople().size()+" People");
-            amountHere.setText("0/"+list.get(position).getPeople().size()+" Present");
+            amountHere.setText(list.get(position).getAmountPresent()+"/"+list.get(position).getPeople().size()+" Present");
 
 
             block.setText("Block: "+list.get(position).getBlock());
@@ -251,6 +263,12 @@ public class MainActivity extends ListActivity {
         if(resultCode==RESULT_OK&&requestCode==CODE){
             theClassElement=(data.getParcelableExtra(KEY));
             list.set(data.getIntExtra(KEYY,0),theClassElement);
+            list.get(data.getIntExtra(KEYY,0)).setImageColor(1);
+            adapter.notifyDataSetChanged();
+        }
+        if(resultCode==RESULT_OK&&requestCode==CODEE){
+            list.get(data.getIntExtra(KEYYYY,0)).setAmountPresent(data.getIntExtra(KEYYY,0));
+            list.get(data.getIntExtra(KEYYYY,0)).setImageColor(data.getIntExtra(ANOTHERKEY,0));
             adapter.notifyDataSetChanged();
         }
     }

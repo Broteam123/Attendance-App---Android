@@ -103,7 +103,7 @@ public class SelectImageFragment extends Fragment {
 
                         String [] words = imageText.split("\n");
                         for(int i=0;i<words.length;i++){
-                            names.add(i,words[i]);
+                            names.add(words[i]);
                         }
                         classElement.setPeople(names);
                     }

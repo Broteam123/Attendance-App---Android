@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -43,11 +44,12 @@ public class ReadTextFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            public void onItemClick(final AdapterView<?> adapterView, View view, final int position, long l) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getLayoutInflater();
                 View v = inflater.inflate(R.layout.editname_dialog,null,false);
                 final EditText editName = (EditText) v.findViewById(R.id.editName);
+                final Button removeName = (Button) v.findViewById(R.id.removeNameButton);
                 editName.setText(list.get(position));
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -65,9 +67,17 @@ public class ReadTextFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
                 });
-                AlertDialog dialog = builder.create();
+                final AlertDialog dialog = builder.create();
                 dialog.setView(v);
                 dialog.show();
+                removeName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        list.remove(position);
+                        adapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 

@@ -14,6 +14,10 @@ public class ClassElement implements Parcelable{
     String block;
     String className;
 
+    int amountPresent;
+
+    int imageColor;
+
     ArrayList<String> people;
 
     boolean done;
@@ -23,6 +27,8 @@ public class ClassElement implements Parcelable{
         this.className=className;
         this.people=new ArrayList<>();
         done=false;
+        amountPresent=0;
+        imageColor=1;
     }
 
     protected ClassElement(Parcel in) {
@@ -59,6 +65,14 @@ public class ClassElement implements Parcelable{
         return done;
     }
 
+    public int getAmountPresent(){
+        return amountPresent;
+    }
+
+    public int getImageColor() {
+        return imageColor;
+    }
+
     public void setBlock(String str){
         block = str;
     }
@@ -68,7 +82,17 @@ public class ClassElement implements Parcelable{
     }
 
     public void setPeople(ArrayList<String> list){
-        people = list;
+        for(int i=0;i<list.size();i++){
+            people.add(list.get(i));
+        }
+    }
+
+    public void setAmountPresent(int amountPresent) {
+        this.amountPresent = amountPresent;
+    }
+
+    public void setImageColor(int color){
+        imageColor=color;
     }
 
     public void setDone(boolean bool){
