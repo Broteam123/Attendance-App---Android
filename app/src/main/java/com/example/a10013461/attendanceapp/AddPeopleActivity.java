@@ -79,8 +79,6 @@ public class AddPeopleActivity extends AppCompatActivity implements SelectImageF
             }
         });
 
-       // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SelectImageFragment()).commit();
-
     }
 
     @Override

@@ -22,13 +22,4 @@
         android:gravity="center"
         android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/removeNameButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_bright"
-        android:text="Remove"
-        android:textAllCaps="false"
-        android:textSize="24sp" />
-
 </LinearLayout>

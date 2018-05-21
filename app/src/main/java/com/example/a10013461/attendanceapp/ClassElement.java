@@ -82,9 +82,7 @@ public class ClassElement implements Parcelable{
     }
 
     public void setPeople(ArrayList<String> list){
-        for(int i=0;i<list.size();i++){
-            people.add(list.get(i));
-        }
+       people=list;
     }
 
     public void setAmountPresent(int amountPresent) {
