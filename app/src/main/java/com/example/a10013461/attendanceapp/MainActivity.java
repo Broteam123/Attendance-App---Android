@@ -80,6 +80,9 @@ public class MainActivity extends ListActivity {
 
     /*
     Awesome Notes Section!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    YALL BETTER GIVE ME CREDZ - IMAN DIN MADE THIS THING K
+
      */
 
     @Override
